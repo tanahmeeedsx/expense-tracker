@@ -1,86 +1,96 @@
 # Expense Tracker
 
-A full-stack expense tracking application built with the MERN stack and Docker Compose.
+<p align="center">
+  <img src="https://img.shields.io/badge/React-2026?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/Node.js-2026?style=for-the-badge&logo=nodedotjs&logoColor=339933" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express.js-2026?style=for-the-badge&logo=express&logoColor=white" alt="Express.js" />
+  <img src="https://img.shields.io/badge/MongoDB-2026?style=for-the-badge&logo=mongodb&logoColor=47A248" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Docker-2026?style=for-the-badge&logo=docker&logoColor=2496ED" alt="Docker" />
+  <img src="https://img.shields.io/badge/NGINX-2026?style=for-the-badge&logo=nginx&logoColor=009639" alt="NGINX" />
+</p>
 
 <p align="center">
-  <img src="screenshots/Screenshot%20From%202026-10-12%2003-02-42.png" alt="Expense Tracker Application Preview" width="100%" />
+  A full-stack expense tracking application built with the MERN stack and Docker Compose.
+</p>
+
+## Application Preview
+
+<p align="center">
+  <img src="./screenshots/expense-tracker.png" alt="Expense Tracker frontend application" width="100%" />
 </p>
 
 ## Overview
 
-Expense Tracker helps users manage daily expenses through a clean interface, with expense records stored in MongoDB and a REST API powered by Express.js.
+Expense Tracker is a full-stack web application for managing daily expenses through a clean interface. It uses a React frontend, an Express REST API, and MongoDB for persistent data storage. Docker Compose runs the application services together.
 
 ## Features
 
 - Add, edit, and delete expenses
 - Search expenses by title
-- Filter by category and date range
+- Filter expenses by category and date range
 - View expense summaries and category breakdowns
 - Export expenses to CSV
 - Seed demo expense data
-- Persist data with MongoDB
-- Run the full application using Docker Compose
+- Persist data using a MongoDB volume
+- Run frontend, backend, and database services with Docker Compose
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    A[React Frontend] --> B[NGINX]
-    B --> C[Express REST API]
-    C --> D[MongoDB]
+    A["React Frontend"] --> B["NGINX"]
+    B --> C["Express REST API"]
+    C --> D[("MongoDB")]
 ```
 
 ## Tech Stack
 
 | Technology | Purpose |
 |---|---|
-| React + Vite | Frontend |
+| React + Vite | Frontend application |
 | Node.js | Backend runtime |
 | Express.js | REST API |
 | MongoDB | Database |
 | NGINX | Frontend serving and API reverse proxy |
-| Docker Compose | Container orchestration |
+| Docker | Application containerization |
+| Docker Compose | Multi-container orchestration |
 
 ## Getting Started
 
 ### Prerequisites
 
-- Docker
+- Git
+- Docker Engine
 - Docker Compose
 
-### Run Locally
-
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/tanahmeeedsx/expense-tracker.git
 cd expense-tracker
 ```
 
-Create your environment file from the example, if required:
-
-```bash
-cp .env.example .env
-```
-
-Start the application:
+### 2. Start the application
 
 ```bash
 docker compose up -d --build
 ```
 
-Open the application in your browser:
+### 3. Open the application
 
-- `http://localhost:8080` if your frontend port mapping is `8080:80`
-- Otherwise, use the host port configured in `docker-compose.yml`
+Visit:
 
-To stop the application:
+**http://localhost:8080**
+
+This assumes the frontend service in `docker-compose.yml` maps host port `8080` to container port `80`. If you configured a different host port, use that port instead.
+
+### Stop the application
 
 ```bash
 docker compose down
 ```
 
-To stop the application without removing the MongoDB data volume, use the command above. Avoid `docker compose down -v` unless you intentionally want to remove the persisted volume.
+The MongoDB data volume is retained when you stop the application this way. Avoid `docker compose down -v` if you want to preserve your stored data.
 
 ## API Endpoints
 
@@ -89,7 +99,7 @@ To stop the application without removing the MongoDB data volume, use the comman
 | GET | `/api/health` | Check API health |
 | GET | `/api/expenses` | Retrieve expenses |
 | POST | `/api/expenses` | Create an expense |
-| POST | `/api/expenses/seed` | Add demo data |
+| POST | `/api/expenses/seed` | Add demo expense data |
 
 ## Project Structure
 
@@ -98,29 +108,35 @@ expense-tracker/
 ├── backend/
 │   ├── src/
 │   │   ├── models/
+│   │   │   └── Expense.js
 │   │   ├── routes/
+│   │   │   └── expenses.js
 │   │   └── server.js
 │   ├── Dockerfile
 │   └── package.json
 ├── frontend/
-│   ├── src/
 │   ├── nginx/
+│   │   └── default.conf
+│   ├── src/
+│   │   ├── main.jsx
+│   │   └── styles.css
 │   ├── Dockerfile
 │   ├── index.html
 │   └── package.json
 ├── screenshots/
+│   └── expense-tracker.png
 ├── docker-compose.yml
 └── README.md
 ```
 
-## What I Practiced
+## What I Learned
 
 - Building a full-stack application with React and Express
-- Designing REST API endpoints
-- Connecting an application to MongoDB
-- Containerizing frontend and backend services
-- Using NGINX as a reverse proxy
-- Running multiple services with Docker Compose
+- Creating REST API endpoints
+- Connecting a backend to MongoDB
+- Containerizing services with Docker
+- Configuring NGINX as a reverse proxy
+- Running multi-container applications with Docker Compose
 
 ## Future Improvements
 
@@ -131,6 +147,10 @@ expense-tracker/
 
 ---
 
-**Built as a hands-on project to practice full-stack development and containerization.**
+<p align="center">
+  Built to practice full-stack development, REST APIs, and Docker-based deployment.
+</p>
 
-[GitHub Repository](https://github.com/tanahmeeedsx/expense-tracker)
+<p align="center">
+  <a href="https://github.com/tanahmeeedsx/expense-tracker">View Repository</a>
+</p>
