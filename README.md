@@ -1,144 +1,163 @@
-# Expense Tracker — MERN + Docker Compose
+# Expense Tracker
 
-A classroom-ready **Expense Tracker MERN app** built with:
+<p align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js" />
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+</p>
 
-- **MongoDB** — database
-- **Express.js** — REST API
-- **React + Vite** — frontend
-- **NGINX** — serves the frontend and proxies `/api` to the backend
-- **Docker Compose** — runs the full stack with one command
+<p align="center">
+  A full-stack MERN expense management application containerized with Docker Compose, featuring a modern interface, expense analytics, and a REST API.
+</p>
 
-The UI uses a cyber AI inspired brand style: dark navy background, purple gradients, neon cyan highlights, and glass panels.
-
----
-
-## Architecture
-
-```text
-Browser
-  |
-  v
-Frontend Container: React static files served by NGINX
-  |
-  | /api requests are proxied by NGINX
-  v
-Backend Container: Express.js API
-  |
-  v
-MongoDB Container: persistent database volume
-```
+<p align="center">
+  <a href="https://github.com/tanahmeeedsx/expense-tracker">Repository</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#getting-started">Getting Started</a> ·
+  <a href="#api-endpoints">API</a>
+</p>
 
 ---
 
-## Project Structure
+## Overview
 
-```text
-expense-tracker-mern/
-│
-├── docker-compose.yml
-├── .env.example
-├── README.md
-│
-├── backend/
-│   ├── Dockerfile
-│   ├── package.json
-│   └── src/
-│       ├── server.js
-│       ├── models/
-│       │   └── Expense.js
-│       └── routes/
-│           └── expenses.js
-│
-└── frontend/
-    ├── Dockerfile
-    ├── package.json
-    ├── index.html
-    ├── nginx/
-    │   └── default.conf
-    └── src/
-        ├── main.jsx
-        └── styles.css
-```
-
----
+Expense Tracker is a full-stack application for managing daily expenses through a modern, cyber-inspired interface. It combines React, Express.js, and MongoDB in a containerized environment, with NGINX serving the frontend and proxying API requests to the backend.
 
 ## Features
 
-- Add expense
-- Edit expense
-- Delete expense
-- Filter by category
-- Search by title
-- Filter by date range
-- Summary cards
-- Category breakdown bars
-- Seed demo data
-- Export visible expenses as CSV
-- Dockerized frontend, backend, and MongoDB
+- **Expense Management** — Add, edit, and delete expenses.
+- **Expense Analytics** — Summary cards and category breakdowns.
+- **Search & Filters** — Search by title, filter by category, and select date ranges.
+- **CSV Export** — Export filtered expenses to a CSV file.
+- **Demo Data** — Seed sample expenses for testing.
+- **Containerized Architecture** — Run the frontend, backend, and database with one command.
+- **Persistent Storage** — Preserve database data using a Docker volume.
 
----
+## Architecture
 
-# Run Locally with Docker Compose
+```mermaid
+flowchart TD
+    A["Browser"] --> B["React Frontend"]
+    B --> C["NGINX"]
+    C -->|"/api requests"| D["Express.js REST API"]
+    D --> E[("MongoDB")]
+    E --- F[("Persistent Docker Volume")]
 
-From the project root:
+    classDef frontend fill:#172554,stroke:#38bdf8,color:#ffffff
+    classDef backend fill:#312e81,stroke:#a78bfa,color:#ffffff
+    classDef database fill:#14532d,stroke:#4ade80,color:#ffffff
+
+    class A,B,C frontend
+    class D backend
+    class E,F database
+```
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| React + Vite | Frontend and UI |
+| Node.js + Express.js | Backend REST API |
+| MongoDB | Database |
+| NGINX | Static file serving and API reverse proxy |
+| Docker | Containerization |
+| Docker Compose | Multi-container orchestration |
+
+## Getting Started
+
+### Prerequisites
+
+- Docker Engine
+- Docker Compose v2 or later
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/tanahmeeedsx/expense-tracker.git
+cd expense-tracker
+```
+
+### 2. Configure environment variables
+
+Review `.env.example` and configure the variables required by `docker-compose.yml` and the backend.
+
+### 3. Build and start the application
 
 ```bash
 docker compose up -d --build
 ```
 
-Open the app:
+### 4. Open the application
+
+If port `80` is available:
 
 ```text
 http://localhost
 ```
 
-Check containers:
+If port `80` is already occupied, configure the frontend port mapping in `docker-compose.yml`, for example:
+
+```yaml
+ports:
+  - "8080:80"
+```
+
+Then open `http://localhost:8080`.
+
+### 5. Verify the containers
 
 ```bash
 docker compose ps
 ```
 
-Check logs:
+View application logs:
 
 ```bash
 docker compose logs -f
 ```
 
-Stop the app:
+Stop the application:
 
 ```bash
 docker compose down
 ```
 
-Stop and delete database volume:
+To remove the database volume and its stored data:
 
 ```bash
 docker compose down -v
 ```
 
----
+**Warning:** The last command permanently removes the Compose-managed database volume.
 
-# API Endpoints
+## API Endpoints
 
-Health check:
+The API is accessible through the frontend's NGINX proxy.
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/health` | Health check |
+| GET | `/api/expenses` | Retrieve expenses |
+| POST | `/api/expenses` | Create an expense |
+| POST | `/api/expenses/seed` | Seed demo data |
+
+### Test the API
+
+Check application health:
 
 ```bash
 curl http://localhost/api/health
 ```
 
-Get expenses:
+Retrieve expenses:
 
 ```bash
 curl http://localhost/api/expenses
 ```
 
-Seed demo data:
-
-```bash
-curl -X POST http://localhost/api/expenses/seed
-```
-
-Create expense:
+Create an expense:
 
 ```bash
 curl -X POST http://localhost/api/expenses \
@@ -146,326 +165,53 @@ curl -X POST http://localhost/api/expenses \
   -d '{"title":"Coffee","amount":4.5,"category":"Food","note":"Morning coffee"}'
 ```
 
----
+If using port `8080`, replace `localhost` with `localhost:8080` in these URLs.
 
-# AWS EC2 Deployment Instruction
-
-## 1. Create EC2 Instance
-
-Recommended settings for classroom demo:
+## Project Structure
 
 ```text
-AMI: Ubuntu Server 22.04 LTS or Ubuntu Server 24.04 LTS
-Instance type: t2.micro / t3.micro for demo, t3.small preferred
-Storage: 12 GB or more
+expense-tracker/
+├── backend/
+│   ├── src/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   └── server.js
+│   └── Dockerfile
+├── frontend/
+│   ├── nginx/
+│   │   └── default.conf
+│   ├── src/
+│   └── Dockerfile
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+└── README.md
 ```
 
-## 2. Configure Security Group
+## What I Learned
 
-Inbound rules:
+- Building and containerizing a full-stack MERN application.
+- Orchestrating multiple services with Docker Compose.
+- Connecting a Node.js backend to MongoDB.
+- Configuring NGINX as a reverse proxy.
+- Managing persistent database storage and service networking.
+- Troubleshooting container startup and host port conflicts.
 
-```text
-SSH    22   Your IP only
-HTTP   80   0.0.0.0/0
-```
+## Future Improvements
 
-Optional for debugging only:
-
-```text
-Custom TCP 5000   Your IP only
-Custom TCP 27017  Your IP only, generally avoid exposing MongoDB publicly
-```
-
-For this app, the browser only needs port `80` because NGINX proxies API calls internally.
+- Automated CI/CD with GitHub Actions.
+- HTTPS and production deployment on AWS.
+- Authentication and authorization.
+- Centralized logging, monitoring, and database backups.
 
 ---
 
-## 3. SSH into EC2
-
-From your laptop:
-
-```bash
-ssh -i your-key.pem ubuntu@YOUR_EC2_PUBLIC_IP
-```
-
----
-
-## 4. Install Docker and Docker Compose Plugin
-
-Run these commands on the EC2 Ubuntu machine:
-
-```bash
-sudo apt update
-sudo apt install -y ca-certificates curl unzip
-```
-
-```bash
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
-  -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-```
-
-```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo \"${UBUNTU_CODENAME:-$VERSION_CODENAME}\") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-```bash
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-
-Allow the `ubuntu` user to run Docker:
-
-```bash
-sudo usermod -aG docker ubuntu
-exit
-```
-
-SSH again:
-
-```bash
-ssh -i your-key.pem ubuntu@YOUR_EC2_PUBLIC_IP
-```
-
-Verify Docker:
-
-```bash
-docker --version
-docker compose version
-```
-
----
-
-## 5. Upload Project ZIP to EC2
-
-From your laptop, from the folder where the zip exists:
-
-```bash
-scp -i your-key.pem expense-tracker-mern.zip ubuntu@YOUR_EC2_PUBLIC_IP:/home/ubuntu/
-```
-
-SSH into EC2:
-
-```bash
-ssh -i your-key.pem ubuntu@YOUR_EC2_PUBLIC_IP
-```
-
-Unzip:
-
-```bash
-unzip expense-tracker-mern.zip
-cd expense-tracker-mern
-```
-
----
-
-## 6. Start the Full MERN App
-
-```bash
-docker compose up -d --build
-```
-
-Check status:
-
-```bash
-docker compose ps
-```
-
-Check logs:
-
-```bash
-docker compose logs -f
-```
-
-Open in browser:
-
-```text
-http://YOUR_EC2_PUBLIC_IP
-```
-
----
-
-## 7. Test the API on EC2
-
-```bash
-curl http://localhost/api/health
-```
-
-Seed demo data:
-
-```bash
-curl -X POST http://localhost/api/expenses/seed
-```
-
-Refresh the browser.
-
----
-
-## 8. Useful Docker Compose Commands for Students
-
-Show running containers:
-
-```bash
-docker compose ps
-```
-
-View logs:
-
-```bash
-docker compose logs -f backend
-```
-
-Restart one service:
-
-```bash
-docker compose restart backend
-```
-
-Rebuild after code changes:
-
-```bash
-docker compose up -d --build
-```
-
-Stop containers:
-
-```bash
-docker compose down
-```
-
-Stop and remove MongoDB data volume:
-
-```bash
-docker compose down -v
-```
-
----
-
-## 9. Go Inside Containers
-
-Frontend container:
-
-```bash
-docker exec -it expense-frontend sh
-ls /usr/share/nginx/html
-cat /etc/nginx/conf.d/default.conf
-exit
-```
-
-Backend container:
-
-```bash
-docker exec -it expense-backend sh
-ls
-node -v
-exit
-```
-
-MongoDB container:
-
-```bash
-docker exec -it expense-mongo mongosh expense_tracker
-show collections
-db.expenses.find().pretty()
-exit
-```
-
----
-
-## 10. Classroom Explanation
-
-```text
-Dockerfile builds one service image.
-Docker Compose starts the complete application stack.
-```
-
-For this project:
-
-```text
-frontend service:
-  React app is built and served by NGINX.
-
-backend service:
-  Express API connects to MongoDB.
-
-mongo service:
-  Official MongoDB image stores data in a Docker volume.
-```
-
-Best analogy:
-
-```text
-Dockerfile = how to build one room
-Docker Compose = how to run the entire house with all rooms connected
-```
-
----
-
-## 11. Troubleshooting
-
-### Port 80 already in use
-
-Check what is using port 80:
-
-```bash
-sudo lsof -i :80
-```
-
-Stop Apache/NGINX if installed on the host:
-
-```bash
-sudo systemctl stop apache2 || true
-sudo systemctl stop nginx || true
-```
-
-Run Compose again:
-
-```bash
-docker compose up -d
-```
-
-### Frontend opens but API fails
-
-Check backend logs:
-
-```bash
-docker compose logs backend
-```
-
-Check Mongo logs:
-
-```bash
-docker compose logs mongo
-```
-
-### Rebuild cleanly
-
-```bash
-docker compose down
-docker compose up -d --build
-```
-
-### Reset all app data
-
-```bash
-docker compose down -v
-docker compose up -d --build
-```
-
----
-
-## Production Notes
-
-For a real production deployment, add:
-
-- HTTPS with NGINX reverse proxy or AWS ALB + ACM certificate
-- Authentication and authorization
-- MongoDB Atlas or managed database
-- CI/CD pipeline
-- Environment-specific secrets
-- Backups for database volume
-- Monitoring and log collection
+<p align="center">
+  Built by <a href="https://github.com/tanahmeeedsx">Tanjim Ahmed</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/tanahmeeedsx/expense-tracker">
+    <img src="https://img.shields.io/badge/GitHub-View%20Repository-181717?style=flat-square&logo=github" alt="View on GitHub" />
+  </a>
+</p>
