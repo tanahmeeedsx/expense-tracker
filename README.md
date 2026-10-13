@@ -70,9 +70,10 @@ git clone https://github.com/tanahmeeedsx/expense-tracker.git
 cd expense-tracker
 ```
 
-### 2. Start the application
+### 2. Configure and start the application
 
 ```bash
+cp .env.example .env        # set passwords; use HTTP_PORT=8080 for local testing
 docker compose up -d --build
 ```
 
@@ -80,9 +81,7 @@ docker compose up -d --build
 
 Visit:
 
-**http://localhost:8080**
-
-This assumes the frontend service in `docker-compose.yml` maps host port `8080` to container port `80`. If you configured a different host port, use that port instead.
+**http://localhost:8080** (when `HTTP_PORT=8080` in `.env`; on EC2 use port `80`)
 
 ### Stop the application
 
@@ -91,6 +90,10 @@ docker compose down
 ```
 
 The MongoDB data volume is retained when you stop the application this way. Avoid `docker compose down -v` if you want to preserve your stored data.
+
+## Deployment (AWS EC2 + S3 backup + Docker Scout)
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the full step-by-step guide.
 
 ## API Endpoints
 
