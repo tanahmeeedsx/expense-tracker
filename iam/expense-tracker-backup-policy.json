@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListBackupPrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::expense-tracker-backup-530629633924",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "mongodb/expense_tracker",
+            "mongodb/expense_tracker/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "UploadAndVerifyBackups",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": "arn:aws:s3:::expense-tracker-backup-530629633924/mongodb/expense_tracker/*"
+    }
+  ]
+}
